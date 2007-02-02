@@ -1,0 +1,44 @@
+Revision history for Perl extension C::Scan::Constants.
+
+1.011
+    - Added contrib dir to MANIFEST
+
+1.010
+    - Adjusted suggested code snippet to have correct XS loading code
+
+1.009
+    - Adjusted documentation to properly represent version number
+
+1.008
+    - added ModPerl::CScan to this distro to avoid having to have
+      the full mod_perl distro installed ahead of time
+    - genericized and beefed up tests, including adding bundled .h files
+    - updated author contact info throughout
+    - insulated code from blueprint
+
+0.04 - 1.007
+    - arranged for constants to be forward-declared so they always
+      behave as constants, instead of as barewords in some circumstances.
+    - changed version to be tied to revision of .pm file.  This is
+      not entirely precise but generally hits the mark.  If the
+      version needs bumping at a later time due to a change somewhere
+      else I'll figure out a workaround then.
+    - migrated to ModPerl::CScan from C::Scan due to the fact that
+      the latter fails on many .h files, whereas the former does not
+    - fixed up constants to be properly mortalized
+
+
+0.03
+    - removed Readonly-related cruft since it's no longer used
+    - added special Blueprint (proprietary build system software)
+      tag to fix build-time non-warnings marked incorrectly as WARN
+
+0.02
+    - changed name to C::Scan::Constants (from original Foo::Constant)
+    - extracted pertinent parts from Foo::Constant into callable functions
+    - added tests for everything that is easy to test
+
+0.01  Thu Jun  2 11:23:42 2005
+	- original version; created by h2xs 1.23 with options
+		-n Foo::Constant
+

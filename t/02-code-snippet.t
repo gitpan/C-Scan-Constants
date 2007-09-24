@@ -8,12 +8,13 @@
 
 use Test::More tests => 2;
 
-my $g_expected_lines = 98;
+my $g_expected_lines;
 BEGIN {
+    $g_expected_lines = 98;
     eval 'require Blueprint';
     unless ($@) {
         # We add two lines of decoration if we are using certain build systems
-        $g_expected_lines +=2;
+        $g_expected_lines +=3;
     }
 }
 

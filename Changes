@@ -1,5 +1,9 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.013
+    - Fixed special case of test 02 so it passes wherever blueprint
+      is installed.
+
 1.012
     - Added Data::Flow to satisfy ModPerl::CScan prereqs.
     - Fixed copying of bundled ModPerl::CScan in Makefile.pl -- "cp -a"

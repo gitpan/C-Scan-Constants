@@ -1,5 +1,12 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.014
+    - Strengthened test for built-in ModPerl::CScan -- if too old,
+      we force an upgrade to bundled version.
+    - Updated enums.h to have a different #ifndef header/trailer -- apparently
+      on some systems _ENUMS_H_ is already defined.
+    - Updated defines.h the same way, just in case.
+
 1.013
     - Fixed special case of test 02 so it passes wherever blueprint
       is installed.

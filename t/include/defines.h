@@ -1,5 +1,5 @@
-#ifndef _DEFINES_H_
-#define _DEFINES_H_
+#ifndef _C_SCAN_CONSTANTS_TEST_DEFINES_H_
+#define _C_SCAN_CONSTANTS_TEST_DEFINES_H_
 
 #include <string.h>
 
@@ -17,4 +17,4 @@
 #define ANSWER            "Forty-two"
 #define LONGER_STR(s)     (strlen(s)+1)
 
-#endif _DEFINES_H_
+#endif _C_SCAN_CONSTANTS_TEST_DEFINES_H_

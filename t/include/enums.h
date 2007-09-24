@@ -1,5 +1,5 @@
-#ifndef _ENUMS_H_
-#define _ENUMS_H_
+#ifndef _C_SCAN_CONSTANTS_TEST_ENUMS_H_
+#define _C_SCAN_CONSTANTS_TEST_ENUMS_H_
 
 /* First, a couple enumerated types we want to discover */
 
@@ -25,4 +25,4 @@ typedef struct {
    unsigned char *baz;
 } should_also_not_see_this_t;
 
-#endif /* _ENUMS_H_ */
+#endif /* _C_SCAN_CONSTANTS_TEST_ENUMS_H_ */

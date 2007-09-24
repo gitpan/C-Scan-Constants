@@ -11,11 +11,15 @@ BEGIN {
     eval 'require ModPerl::CScan';
 
     if ($@) {
+        print STDERR "ModPerl::CScan not installed, using bundled copy.\n";
+        $g_use_bundled_cscan = 1;
+    } elsif ($ModPerl::CScan::VERSION < 0.75) {
+        print STDERR "ModPerl::CScan too old ($ModPerl::CScan::VERSION < 0.75),  using bundled copy.\n";
         $g_use_bundled_cscan = 1;
     }
+      
 
     if ($g_use_bundled_cscan) {
-        print STDERR "ModPerl::CScan not installed, using bundled copy.\n";
         if ( ! -d 'lib/ModPerl' ) {
             mkdir('lib/ModPerl') or
                 die "Could not create lib/ModPerl to relocate bundled CScan.pm: $!"

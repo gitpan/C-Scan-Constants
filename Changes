@@ -1,5 +1,12 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.012
+    - Added Data::Flow to satisfy ModPerl::CScan prereqs.
+    - Fixed copying of bundled ModPerl::CScan in Makefile.pl -- "cp -a"
+      is not supported on many platforms, so using File::Copy::copy()
+      in conjuntion with Perl builtin mkdir() instead.
+    - Correct Pod syntax error (unbalanced =back on line 663).
+
 1.011
     - Added contrib dir to MANIFEST
 

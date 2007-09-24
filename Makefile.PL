@@ -1,5 +1,6 @@
 use 5.008003;
 use ExtUtils::MakeMaker;
+use File::Copy;
 
 my $g_use_bundled_cscan;
 
@@ -14,8 +15,13 @@ BEGIN {
     }
 
     if ($g_use_bundled_cscan) {
-        print STDERR "ModPerl::Scan not installed, using bundled copy.\n";
-        `cp -a contrib/lib/ModPerl lib`;
+        print STDERR "ModPerl::CScan not installed, using bundled copy.\n";
+        if ( ! -d 'lib/ModPerl' ) {
+            mkdir('lib/ModPerl') or
+                die "Could not create lib/ModPerl to relocate bundled CScan.pm: $!"
+        }
+        copy('contrib/lib/ModPerl/CScan.pm', 'lib/ModPerl/CScan.pm') or
+            die "Could not copy bundled ModPerl::CScan to lib directory: $!";
     }
 }
 
@@ -24,7 +30,8 @@ BEGIN {
 WriteMakefile(
     NAME              => 'C::Scan::Constants',
     VERSION_FROM      => 'lib/C/Scan/Constants.pm', # finds $VERSION
-    PREREQ_PM         => { 'File::Temp'      => 0,
+    PREREQ_PM         => { 'Data::Flow'      => 0,
+                           'File::Temp'      => 0,
                            'File::Copy'      => 0,
                            'File::Spec'      => 0,
                            'File::Path'      => 0,

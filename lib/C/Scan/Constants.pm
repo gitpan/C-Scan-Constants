@@ -25,7 +25,7 @@ our @EXPORT      = qw( extract_constants_from
 our %EXPORT_TAGS = ( 'all' => [ @EXPORT ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = do { my @r=(q$Revision: 1.11 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 1.12 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
 
 
 my $g_use_blueprint_sections;
@@ -531,7 +531,7 @@ C::Scan::Constants - Slurp constants from specified C header (.h) files
 
 =head1 VERSION
 
-This documentation refers to C::Scan::Constants version 1.011.
+This documentation refers to C::Scan::Constants version 1.012.
 
 =head1 SYNOPSIS
 
@@ -652,13 +652,19 @@ types of questions.
 
 For the program proper:
 
-    Carp, ExtUtils::Constants, ModPerl::CScan,
-    C::Scan, File::Temp, File::Copy,
-    File::Spec, File::Path, Exporter
+=over 4
+
+Carp, Data::Flow, ExtUtils::Constants,
+ModPerl::CScan, C::Scan, File::Temp, File::Copy,
+File::Spec, File::Path, Exporter
+
+=back
 
 Additional modules needed for tests (over and above Test::More):
 
-    Scalar::Util, List::MoreUtils, Cwd
+=over 4
+
+Scalar::Util, List::MoreUtils, Cwd
 
 =back
 

@@ -1,5 +1,14 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.015
+    - Corrected broken #endif in t/include/defines.h
+    - Added #ifdef __cplusplus logic in both test .h files
+    - Beefed up check in extract_constants_from() so we issue a warning
+      if we failed to find constants in an input .h file -- this should
+      help isolate failing test cases on some platforms
+    - Added Test::Pod test to improve Kwalitee
+    - Added support for LICENSE in Makefile.PL in improve Kwalitee
+    
 1.014
     - Strengthened test for built-in ModPerl::CScan -- if too old,
       we force an upgrade to bundled version.

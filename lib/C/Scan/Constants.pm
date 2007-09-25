@@ -25,7 +25,7 @@ our @EXPORT      = qw( extract_constants_from
 our %EXPORT_TAGS = ( 'all' => [ @EXPORT ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = do { my @r=(q$Revision: 1.14 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 1.15 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
 
 
 my $g_use_blueprint_sections;
@@ -102,7 +102,8 @@ sub _get_constant_data_blobs_from {
     # Restore STDERR
     open STDERR, ">&", $OLDERR;
 
-    # return the file object returned from ModPerl::CScan->new()
+    # Return the file object returned from ModPerl::CScan->new()
+    # Note: these may be empty (hashref, arrayref)
     return ($defs, $typedefs);
 }
 
@@ -126,7 +127,10 @@ sub extract_constants_from {
         my ($defs,
             $typedefs) = _get_constant_data_blobs_from( $c_header_file );
 
-        if ( !defined $defs && !defined $typedefs ) {
+        if ( ( !defined $defs ||
+               (defined $defs && scalar( keys %$defs ) == 0) ) ||
+             ( !defined $typedefs ||
+               (!defined $typedefs || scalar @$typedefs == 0) ) ) {
             warn "WARNING: Found no constants in $c_header_file.";
             next C_HEADER_FILE;
         }
@@ -531,7 +535,7 @@ C::Scan::Constants - Slurp constants from specified C header (.h) files
 
 =head1 VERSION
 
-This documentation refers to C::Scan::Constants version 1.014.
+This documentation refers to C::Scan::Constants version 1.015.
 
 =head1 SYNOPSIS
 

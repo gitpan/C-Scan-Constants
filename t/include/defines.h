@@ -1,7 +1,11 @@
-#ifndef _C_SCAN_CONSTANTS_TEST_DEFINES_H_
-#define _C_SCAN_CONSTANTS_TEST_DEFINES_H_
+#ifndef C_SCAN_CONSTANTS_TEST_DEFINES_H_
+#define C_SCAN_CONSTANTS_TEST_DEFINES_H_
 
 #include <string.h>
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 /* Some definitions we want to detect */
 #define FREEZING_TEMP_F   32
@@ -17,4 +21,8 @@
 #define ANSWER            "Forty-two"
 #define LONGER_STR(s)     (strlen(s)+1)
 
-#endif _C_SCAN_CONSTANTS_TEST_DEFINES_H_
+#ifdef  __cplusplus
+}
+#endif
+
+#endif /* defines.h */

@@ -40,7 +40,9 @@ WriteMakefile(
                            'File::Spec'      => 0,
                            'File::Path'      => 0,
                            'Scalar::Util'    => 0,
-                           'List::MoreUtils' => 0 },
+                           'List::MoreUtils' => 0,
+                           'Test::Pod'       => 0 },
+    LICENSE           => 'Perl',    # supported since E::M 6.31
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (AUTHOR         => 'Philip Monsen <philip.monsen@gmail.com>') : ()),
     LIBS              => [''], # e.g., '-lm'

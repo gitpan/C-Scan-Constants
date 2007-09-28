@@ -12,6 +12,7 @@ use File::Copy;
 use File::Spec;
 use File::Path;
 use Data::Dumper;
+use IO::File;
 
 require Exporter;
 
@@ -25,7 +26,7 @@ our @EXPORT      = qw( extract_constants_from
 our %EXPORT_TAGS = ( 'all' => [ @EXPORT ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = do { my @r=(q$Revision: 1.15 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 1.16 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
 
 
 my $g_use_blueprint_sections;
@@ -82,25 +83,40 @@ sub _get_constant_data_blobs_from {
     open my $OLDERR, ">&", STDERR;
     close(STDERR);
 
+	# Redirect temporarily to the bit bucket, but keep it open
+	# to avoid conflicting in a -w environment such as under test.
+    # TBD: Make this friendlier for non-*n[u|i]x systems.
+    open *STDERR, ">", "/dev/null";
+
     # We only care about unadorned macros, i.e. "defines"
     my $defs     = $c_header_file->get("defines_no_args");
+### These next lines represent possible future functionality ####
 #    my $defs2    = $c_header_file->get("defines_maybe");
 #    my $defs3    = $c_header_file->get("defines_full");
 #    my $defs4    = $c_header_file->get("defines_args");
 #    my $defs5    = $c_header_file->get("defines_no_args_full");
 #    my $defs6    = $c_header_file->get("Defines");
+##################################################################
     my $typedefs = $c_header_file->get("typedef_texts");
 
-    warn sprintf("[$file_to_relocate] defines_no_args = %s", Dumper($defs));
+    
+### For debugging only ######################################################
+### NOTE: need to send STDERR somewhere other than /dev/null for these to
+###       work as intended.
+###
+#    warn sprintf("[$file_to_relocate] defines_no_args = %s", Dumper($defs));
 #    warn sprintf("[$file_to_relocate] defines_maybe = %s", Dumper($defs2));
 #    warn sprintf("[$file_to_relocate] defines_full = %s", Dumper($defs3));
 #    warn sprintf("[$file_to_relocate] defines_args = %s", Dumper($defs4));
 #    warn sprintf("[$file_to_relocate] defines_no_args_full = %s", Dumper($defs5));
 #    warn sprintf("[$file_to_relocate] Defines = %s", Dumper($defs6));
-    warn sprintf("[$file_to_relocate] enums = %s", Dumper($typedefs));
+#    warn sprintf("[$file_to_relocate] enums = %s", Dumper($typedefs));
+#############################################################################
 
-    # Restore STDERR
+    # Restore STDERR and close the temp filehandle for neatness.
+    close STDERR;
     open STDERR, ">&", $OLDERR;
+	close $OLDERR;
 
     # Return the file object returned from ModPerl::CScan->new()
     # Note: these may be empty (hashref, arrayref)
@@ -535,7 +551,7 @@ C::Scan::Constants - Slurp constants from specified C header (.h) files
 
 =head1 VERSION
 
-This documentation refers to C::Scan::Constants version 1.015.
+This documentation refers to C::Scan::Constants version 1.016.
 
 =head1 SYNOPSIS
 

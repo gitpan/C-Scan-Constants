@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                C-Scan-Constants
-version:             1.015
+version:             1.016
 abstract:            ~
 license:             Perl
 generated_by:        ExtUtils::MakeMaker version 6.36

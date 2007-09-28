@@ -1,5 +1,10 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.016
+    - Thanks to cpan-testers reports from Solaris platforms
+      I discovered and fixed a bug in the way we handle STDERR.
+      Tests in test file 03 should now pass on Solaris too.
+
 1.015
     - Corrected broken #endif in t/include/defines.h
     - Added #ifdef __cplusplus logic in both test .h files

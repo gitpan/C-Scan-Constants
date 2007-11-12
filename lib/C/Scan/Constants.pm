@@ -26,7 +26,7 @@ our @EXPORT      = qw( extract_constants_from
 our %EXPORT_TAGS = ( 'all' => [ @EXPORT ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = do { my @r=(q$Revision: 1.16 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 1.17 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
 
 
 my $g_use_blueprint_sections;
@@ -551,7 +551,7 @@ C::Scan::Constants - Slurp constants from specified C header (.h) files
 
 =head1 VERSION
 
-This documentation refers to C::Scan::Constants version 1.016.
+This documentation refers to C::Scan::Constants version 1.017.
 
 =head1 SYNOPSIS
 
@@ -756,7 +756,7 @@ permissions and limitations under the License.
 
 I<All else>
 
-Copyright (C) 2005-7 by Philip Monsen.  All rights reserved.
+Copyright (C) 2005-7 by Philip Monsen.
 
 This module is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.3 or,

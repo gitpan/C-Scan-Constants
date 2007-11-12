@@ -34,15 +34,17 @@ BEGIN {
 WriteMakefile(
     NAME              => 'C::Scan::Constants',
     VERSION_FROM      => 'lib/C/Scan/Constants.pm', # finds $VERSION
-    PREREQ_PM         => { 'Data::Flow'      => 0,
-                           'File::Temp'      => 0,
-                           'File::Copy'      => 0,
-                           'File::Spec'      => 0,
-                           'File::Path'      => 0,
-                           'Scalar::Util'    => 0,
-                           'List::MoreUtils' => 0,
-                           'Test::Pod'       => 0 },
-    LICENSE           => 'Perl',    # supported since E::M 6.31
+    PREREQ_PM         => { 'Data::Flow'          => 0,
+                           'File::Temp'          => 0,
+                           'File::Copy'          => 0,
+                           'File::Spec'          => 0,
+                           'File::Path'          => 0,
+                           'Scalar::Util'        => 0,
+                           'List::MoreUtils'     => 0,
+                           'Test::Pod'           => 0,
+                           'Test::Pod::Coverage' => 0 },
+    LICENSE           => 'perl',    # LICENSE supported since E::M 6.31
+    ABSTRACT          => 'Slurp constants from specified C header files',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (AUTHOR         => 'Philip Monsen <philip.monsen@gmail.com>') : ()),
     LIBS              => [''], # e.g., '-lm'

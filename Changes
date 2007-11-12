@@ -1,5 +1,12 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.017
+    - Added pod-coverage and kwalitee tests (to improve kwalitee)
+    - Added ABSTRACT to Makefile.PL (to improve kwalitee)
+    - Change license to "perl" instead of "Perl" to conform
+      to list of valid licenses per Module::Build manpage (to improve kwalitee)
+    - Updated README to make copyright disclaimer less restrictive.
+
 1.016
     - Thanks to cpan-testers reports from Solaris platforms
       I discovered and fixed a bug in the way we handle STDERR.

@@ -26,8 +26,8 @@ our @EXPORT      = qw( extract_constants_from
 our %EXPORT_TAGS = ( 'all' => [ @EXPORT ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = do { my @r=(q$Revision: 1.17 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
-
+#our $VERSION = do { my @r=(q$Revision: 1.18 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = 1.018;
 
 my $g_use_blueprint_sections;
 
@@ -36,7 +36,7 @@ BEGIN {
     $g_use_blueprint_sections = 0;
 
     eval 'require Blueprint';
-   
+
     unless ($@) {
         $g_use_blueprint_sections = 1;
     }
@@ -61,7 +61,7 @@ sub _get_constant_data_blobs_from {
 
     # Create a temp directory here.
     my $temp_scan_dir = tempdir( 'c_scan_const_XXXXX',
-                                 DIR     => '/tmp',
+                                 DIR     => File::Spec->tmpdir(),
                                  CLEANUP => 1 )
         or die "Internal error: failed to create temp dir";
 
@@ -99,7 +99,7 @@ sub _get_constant_data_blobs_from {
 ##################################################################
     my $typedefs = $c_header_file->get("typedef_texts");
 
-    
+
 ### For debugging only ######################################################
 ### NOTE: need to send STDERR somewhere other than /dev/null for these to
 ###       work as intended.
@@ -154,14 +154,27 @@ sub extract_constants_from {
         # Do the messy enum extraction
         my @enums = _extract_enum_constants_from( $typedefs );
 
+        # We convert the base filename into something we can use
+        # to avoid the error of throwing away the "filename constant"
+	# e.g.  #ifndef FOO_H_
+	#       #define FOO_H_
+	my $all_caps_basename = uc ( ( File::Spec->splitpath($c_header_file) )[2] );
+	$all_caps_basename =~ s/[.]/_/g;
+
         # Consolidate all names found into a single list.
         # Note that we discard string constants.
         my @constant_names = ( @enums,
                                grep {
                                    my $defn = $_;
 
-                                   # Toss header file identifiers.
-                                   $defn !~ /_H[_]?$/
+                                   # Toss header file identifiers, but only
+				   # when they are *really* header file identifiers.
+                                   ( $defn !~ /_H[_]?$/
+				     or ($defn =~ /_H[_]?$/
+					 and $all_caps_basename !~ /[_]?$defn[_]?/) )
+
+				   # Toss things ending in underscore (may not
+				   # be a good idea, but we'll wait to be convinced...)
                                    and $defn !~ /_$/
 
                                    # Toss string constants.
@@ -332,8 +345,8 @@ sub write_constants_module {
         = join '/', ( $const_mod_dir_name,
                       $fwd_decl_base_name,
                     );
-          
-    
+
+
     # Create directory in which to place the module
     unless (-d "$const_mod_dir_name") {
         mkpath( $const_mod_dir_name, 0, 0755) or die "mkpath failed: $!";
@@ -345,7 +358,7 @@ sub write_constants_module {
         or die "Could not open $const_mod_base_name for writing: $!";
     open my $fwd_decl_fh, ">", "$fwd_decl_base_full_name"
         or die "Could not open $fwd_decl_base_full_name for writing: $!";
-    
+
     # Common arg list for the next threee functions
     (my $const_mod_name_prefix = $const_mod_base_name) =~ s/[.]pm$//;
     my $sub_pkg_name = join "::", ($pkg_name,
@@ -551,7 +564,7 @@ C::Scan::Constants - Slurp constants from specified C header (.h) files
 
 =head1 VERSION
 
-This documentation refers to C::Scan::Constants version 1.017.
+This documentation refers to C::Scan::Constants version 1.018.
 
 =head1 SYNOPSIS
 
@@ -742,7 +755,7 @@ Copyright (C) 2005 by Doug MacEachern.
 Licensed under the Apache License, Version 2.0; you may not
 use this file except in compliance with the License.  A current
 copy of the license is available at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
 
 See also contrib/LICENSE for a Jan. 2004 copy of the license text.
@@ -756,7 +769,7 @@ permissions and limitations under the License.
 
 I<All else>
 
-Copyright (C) 2005-7 by Philip Monsen.
+Copyright (C) 2005-10 by Philip Monsen.
 
 This module is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.3 or,
@@ -764,7 +777,7 @@ at your option, any later version of Perl 5 you may have available.
 See L<perlartistic>.
 
 This module is distributed in the hope that it will be useful,
-and is provided on an "AS-IS" basis, 
+and is provided on an "AS-IS" basis,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 or implied, including, without limitation, any warranties or
 conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or

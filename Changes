@@ -1,5 +1,15 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.018
+    - Fixed t/07-kwalitee.t to not have a typo in the skip directive.
+    - Fixed Constants.pm to use File::Spec->tmpdir() instead of pegging
+      the temp dir as /tmp (which breaks on Windows).  Thanks to Tobias Leich
+      for suggesting that easy fix.
+    - Added a test to t/03-extract.t to assure that we don't exclude
+      constants ending in _H[_]? -- along with fixes in Constants.pm.
+      Thanks to Lee Pumphret for pointing out the bug leading to this fix.
+    - Fixed Makefile.PL to be more robust at cleanup time on Windows.
+
 1.017
     - Added pod-coverage and kwalitee tests (to improve kwalitee)
     - Added ABSTRACT to Makefile.PL (to improve kwalitee)
@@ -20,7 +30,7 @@ Revision history for Perl extension C::Scan::Constants.
       help isolate failing test cases on some platforms
     - Added Test::Pod test to improve Kwalitee
     - Added support for LICENSE in Makefile.PL in improve Kwalitee
-    
+
 1.014
     - Strengthened test for built-in ModPerl::CScan -- if too old,
       we force an upgrade to bundled version.
@@ -80,4 +90,3 @@ Revision history for Perl extension C::Scan::Constants.
 0.01  Thu Jun  2 11:23:42 2005
 	- original version; created by h2xs 1.23 with options
 		-n Foo::Constant
-

@@ -8,6 +8,7 @@ contrib/LICENSE
 contrib/lib/ModPerl/CScan.pm
 t/include/defines.h
 t/include/enums.h
+t/include/input.h
 t/01-use-module.t
 t/02-code-snippet.t
 t/03-extract.t

@@ -1,6 +1,7 @@
 use 5.008003;
 use ExtUtils::MakeMaker;
 use File::Copy;
+use File::Spec;
 
 my $g_use_bundled_cscan;
 
@@ -17,7 +18,7 @@ BEGIN {
         print STDERR "ModPerl::CScan too old ($ModPerl::CScan::VERSION < 0.75),  using bundled copy.\n";
         $g_use_bundled_cscan = 1;
     }
-      
+
 
     if ($g_use_bundled_cscan) {
         if ( ! -d 'lib/ModPerl' ) {
@@ -59,24 +60,37 @@ WriteMakefile(
 
 # clean up appropriately on "make clean"
 sub MY::postamble {
-	if ($g_use_bundled_cscan) {
+	if ($g_use_bundled_cscan and $^O =~ /mswin/i) {
 	'
 clean :: myclean
 myclean:
-	$(RM) Makefile.old 
+	del /f/q Makefile.old
+	del /f/q const-c.inc const-xs.inc
+	del /f/q tmp*
+	rmdir /s/q lib\ModPerl
+	del /f/q *.gz
+	del /f/q *_CPANTS.txt
+';
+	} elsif ($g_use_bundled_cscan) {
+	'
+clean :: myclean
+myclean:
+	$(RM) Makefile.old
 	$(RM) const-c.inc const-xs.inc
-	$(RM) -r tmp*
+	$(RM) tmp*
 	$(RM) -r lib/ModPerl
 	$(RM) *.gz
+	$(RM) *_CPANTS.txt
 ';
 	} else {
 '
 clean :: myclean
 myclean:
-	$(RM) Makefile.old 
+	$(RM) Makefile.old
 	$(RM) const-c.inc const-xs.inc
-	$(RM) -r tmp*
+	$(RM) tmp*
 	$(RM) *.gz
+	$(RM) *_CPANTS.txt
 ';
 	}
 }

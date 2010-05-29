@@ -1,22 +1,30 @@
 --- #YAML:1.0
-name:                C-Scan-Constants
-version:             1.017
-abstract:            Slurp constants from specified C header files
-license:             perl
-generated_by:        ExtUtils::MakeMaker version 6.36
-distribution_type:   module
-requires:     
-    Data::Flow:                    0
-    File::Copy:                    0
-    File::Path:                    0
-    File::Spec:                    0
-    File::Temp:                    0
-    List::MoreUtils:               0
-    Scalar::Util:                  0
-    Test::Pod:                     0
-    Test::Pod::Coverage:           0
-meta-spec:
-    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
-    version: 1.2
+name:               C-Scan-Constants
+version:            1.018
+abstract:           Slurp constants from specified C header files
 author:
     - Philip Monsen <philip.monsen@gmail.com>
+license:            perl
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+requires:
+    Data::Flow:           0
+    File::Copy:           0
+    File::Path:           0
+    File::Spec:           0
+    File::Temp:           0
+    List::MoreUtils:      0
+    Scalar::Util:         0
+    Test::Pod:            0
+    Test::Pod::Coverage:  0
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.56
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4

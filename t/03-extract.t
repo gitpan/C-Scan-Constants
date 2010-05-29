@@ -8,18 +8,20 @@
 
 use Scalar::Util qw( reftype );
 use List::MoreUtils qw( any none );
-use Test::More tests => 12;
+use Test::More tests => 13;
 BEGIN { use_ok('C::Scan::Constants') };                        # 1
 
 #########################
 
 my @h_files = qw( t/include/defines.h
-                  t/include/enums.h );
+                  t/include/enums.h
+                  t/include/input.h );
 
 # Arrange for running directly from this directory
 if (!-d "t/include") {
     @h_files = qw( include/defines.h
-                   include/enums.h );
+                   include/enums.h
+                   include/input.h );
 }
 
 my @constants = C::Scan::Constants::extract_constants_from( @h_files );
@@ -80,3 +82,9 @@ ok( $no_donts_expected,
 my $no_LONGER_STR = none { $_ =~ /LONGER_STR/ } @constants;
 ok( $no_LONGER_STR,
     "Extract found no constants with names including 'dont_'" );  # 12
+
+# Thanks to Lee Pumphret for suggesting this test (RT #34986)
+my @key_h_exists = map { if ($_ =~ /^KEY_[GHI]$/) { $_ } else { () } } @constants;
+is( scalar @key_h_exists, 3,
+    "We successfully did not pitch real _H constants" );          # 13
+#diag( "expected GHI, found @key_h_exists" )

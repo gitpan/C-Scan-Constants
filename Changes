@@ -1,5 +1,15 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.019
+    - Fixed Win32 test bug related to lack of cppstdin (use $Config{cc} -E)
+    - Made tests cross-platform
+    - Made POD coverage test optional
+    - Removed Makefile.PL prereqs related to POD checking
+    - Updated $VERSION to best practice style
+    - Updated #define in enums.h for consistency with other .h files
+    - Updated Makefile.PL to have no path sep issues, and to bail gracefully (exit 0 before Makefile is created) if gcc is not found.
+    - Updated Makefile.PL to reference bug tracking page and repo page
+
 1.018
     - Fixed t/07-kwalitee.t to not have a typo in the skip directive.
     - Fixed Constants.pm to use File::Spec->tmpdir() instead of pegging

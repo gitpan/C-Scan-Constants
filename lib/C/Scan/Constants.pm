@@ -13,6 +13,7 @@ use File::Spec;
 use File::Path;
 use Data::Dumper;
 use IO::File;
+use Config;
 
 require Exporter;
 
@@ -26,11 +27,13 @@ our @EXPORT      = qw( extract_constants_from
 our %EXPORT_TAGS = ( 'all' => [ @EXPORT ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-#our $VERSION = do { my @r=(q$Revision: 1.18 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
-our $VERSION = 1.018;
+our $VERSION = "1.019";
+$VERSION = eval $VERSION;
 
+# This module was originally written to support a custom pure-Perl
+# build system named Blueprint.  If you know of or use Blueprint,
+# this section will mean something to you.  If not, ignore it.
 my $g_use_blueprint_sections;
-
 BEGIN {
     # Initialize global variable(s)
     $g_use_blueprint_sections = 0;
@@ -75,10 +78,25 @@ sub _get_constant_data_blobs_from {
 
     # scan the file
     my $c_header_file = ModPerl::CScan->new( filename => $relocated_file );
+    
     if ( !defined( $c_header_file ) ) {
         croak "Could not create ModPerl::CScan obj for $relocated_file";
     }
 
+    # Ugly hack to fix ActivePerl config bomb, i.e. expectation that "cppstdin"
+    # is the cpp we'll be using.  This assumes MinGW is installed, which we
+    # attempted to enforce in the Makefile.PL.  It probably assumes more than
+    # should be safely assumed about the return data structure from Data::Flow,
+    # but it seems to work.
+    if ( $^O =~ /MSWin/i ) {
+        my $cur_cppstdin = $c_header_file->get('Cpp')->{cppstdin};
+	my $cur_cc = $Config{cc};
+	unless (     $cur_cppstdin =~ /$cur_cc/
+	         and $cur_cppstdin =~ /\-E/ ) {
+            $c_header_file->get('Cpp')->{cppstdin} = "$cur_cc -E";
+	}
+    }
+    
     # Swallow STDERR temporarily
     open my $OLDERR, ">&", STDERR;
     close(STDERR);
@@ -144,9 +162,9 @@ sub extract_constants_from {
             $typedefs) = _get_constant_data_blobs_from( $c_header_file );
 
         if ( ( !defined $defs ||
-               (defined $defs && scalar( keys %$defs ) == 0) ) ||
+               (defined $defs && scalar( keys %$defs ) == 0) ) and
              ( !defined $typedefs ||
-               (!defined $typedefs || scalar @$typedefs == 0) ) ) {
+               (defined $typedefs && scalar @$typedefs == 0) ) ) {
             warn "WARNING: Found no constants in $c_header_file.";
             next C_HEADER_FILE;
         }
@@ -440,6 +458,10 @@ sub _suggested_code_snippets {
 
     # Set up for extra decoration if needed to help out a build system
     my ($header,$trailer);
+
+    # As mentioned above, we include support for a custom pure-Perl
+    # build system named Blueprint.  If you know of or use Blueprint,
+    # the "if" clause here will mean something to you.  If not, ignore it.
     if ($g_use_blueprint_sections) {
         $header  = "##### (BLUEPRINT: BEGIN EXPECTED OUTPUT) #####\n";
         $trailer = "##### (BLUEPRINT: END EXPECTED OUTPUT) #####\n";

@@ -9,19 +9,26 @@
 use Scalar::Util qw( reftype );
 use List::MoreUtils qw( any none );
 use Test::More tests => 13;
+use File::Spec;
 BEGIN { use_ok('C::Scan::Constants') };                        # 1
 
 #########################
 
-my @h_files = qw( t/include/defines.h
-                  t/include/enums.h
-                  t/include/input.h );
+my @h_files = (  File::Spec->catfile( qw/t include defines.h/ ),
+                 File::Spec->catfile( qw/t include enums.h/ ),
+                 File::Spec->catfile( qw/t include input.h/ ),
+              );
+
+for my $hf (@h_files) {
+    print STDERR "File $hf does not exist" unless -f $hf;
+}
 
 # Arrange for running directly from this directory
-if (!-d "t/include") {
-    @h_files = qw( include/defines.h
-                   include/enums.h
-                   include/input.h );
+if (!-d File::Spec->catfile(qw/t include/)) {
+    @h_files = (  File::Spec->catfile( qw/include defines.h/ ),
+                  File::Spec->catfile( qw/include enums.h/ ),
+                  File::Spec->catfile( qw/include input.h/ ),
+               );
 }
 
 my @constants = C::Scan::Constants::extract_constants_from( @h_files );

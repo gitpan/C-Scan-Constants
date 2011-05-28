@@ -5,9 +5,14 @@
 #########################
 
 
-use Test::More tests => 1;
+use Test::More;
 eval "use Test::Pod 1.00";
-plan skip_all => "Test::Pod 1.00 required for testing POD" if $@;
+if ($@) {
+    plan skip_all => "Test::Pod 1.00 required for testing POD";
+}
+else {
+    plan tests => 1;
+}
 my $dir_to_test = "lib/C/Scan";
 if (! -d $dir_to_test) {
     $dir_to_test = "../$dir_to_test";

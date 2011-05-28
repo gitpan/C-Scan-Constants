@@ -1,5 +1,5 @@
 #ifndef C_SCAN_CONSTANTS_TEST_ENUMS_H_
-#define C_SCAN_CONSTANTS_TEST_ENUMS_H_ 1
+#define C_SCAN_CONSTANTS_TEST_ENUMS_H_
 
 #ifdef  __cplusplus
 extern "C" {

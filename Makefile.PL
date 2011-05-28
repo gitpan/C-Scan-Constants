@@ -2,6 +2,7 @@ use 5.008003;
 use ExtUtils::MakeMaker;
 use File::Copy;
 use File::Spec;
+use Config;
 
 my $g_use_bundled_cscan;
 
@@ -20,30 +21,54 @@ BEGIN {
     }
 
 
+    my $libmodp_dir = File::Spec->catfile('lib', 'ModPerl');
     if ($g_use_bundled_cscan) {
-        if ( ! -d 'lib/ModPerl' ) {
-            mkdir('lib/ModPerl') or
-                die "Could not create lib/ModPerl to relocate bundled CScan.pm: $!"
+        if ( ! -d $libmodp_dir ) {
+            mkdir($libmodp_dir) or
+                die "Could not create $libmodp_dir to relocate bundled CScan.pm: $!"
         }
-        copy('contrib/lib/ModPerl/CScan.pm', 'lib/ModPerl/CScan.pm') or
+        copy(File::Spec->catfile('contrib',$libmodp_dir,'CScan.pm'),
+	     File::Spec->catfile($libmodp_dir,'CScan.pm')) or
             die "Could not copy bundled ModPerl::CScan to lib directory: $!";
     }
 }
 
+# Bail out now if we can't find gcc in the build config.  Note that this
+# may not be enough to assure later use of the C preprocessor will
+# actually be successful, so we should also probably test gcc now for
+# completeness.
+if ($^O =~ /mswin/i) {
+    if ($Config{cc} !~ /gcc/i) {
+        my $warn_msg = <<END_WARN_MSG;
+
+On Windows platforms we require gcc to assure proper C preprocessor behavior.
+Please assure that MinGW, gcc, or similar package is installed.
+END_WARN_MSG
+        warn $warn_msg;
+	exit 0;
+    }
+}
+
+# Create platform-independent versions of needed paths.
+my $main_module = File::Spec->catfile( qw/lib C Scan Constants.pm/ );
+my @tests;
+opendir(my $test_dh, "t") or die "Could not open test directory: $!";
+while (my $test = readdir $test_dh) {
+    next unless $test =~ /[.]t$/;
+    push @tests, File::Spec->catfile( 't', $test );
+}
+
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
-WriteMakefile(
+my %parms = (
     NAME              => 'C::Scan::Constants',
-    VERSION_FROM      => 'lib/C/Scan/Constants.pm', # finds $VERSION
+    VERSION_FROM      => $main_module, # finds $VERSION
     PREREQ_PM         => { 'Data::Flow'          => 0,
                            'File::Temp'          => 0,
                            'File::Copy'          => 0,
-                           'File::Spec'          => 0,
                            'File::Path'          => 0,
                            'Scalar::Util'        => 0,
-                           'List::MoreUtils'     => 0,
-                           'Test::Pod'           => 0,
-                           'Test::Pod::Coverage' => 0 },
+                           'List::MoreUtils'     => 0 },
     LICENSE           => 'perl',    # LICENSE supported since E::M 6.31
     ABSTRACT          => 'Slurp constants from specified C header files',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
@@ -54,9 +79,19 @@ WriteMakefile(
 	# Un-comment this if you add C files to link with later:
     # OBJECT            => '$(O_FILES)', # link all the C files too
 
-#    test              => {TESTS => 't/01-use-module.t'},
-    test              => {TESTS => 't/*.t'},
+    test              => {TESTS => join(" ", @tests)},
 );
+
+if ( $ExtUtils::MakeMaker::VERSION ge '6.46' ) {
+    $parms{META_MERGE} = {
+        resources => {
+            bugtracker => 'http://rt.cpan.org/Public/Dist/Display.html?Name=C-Scan-Constants',
+            repository => 'git://github.com/icerider70/c-scan-constants.git',
+        },
+    };
+}
+
+WriteMakefile( %parms );
 
 # clean up appropriately on "make clean"
 sub MY::postamble {

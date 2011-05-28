@@ -1,4 +1,4 @@
-C-Scan-Constants version 1.018
+C-Scan-Constants version 1.019
 ==============================
 
 Make sure to check the dependencies list in the POD documentation.
@@ -41,7 +41,7 @@ COPYRIGHT AND LICENSE
 
    All else
    --------
-   Copyright (C) 2005-10 by Philip Monsen.
+   Copyright (C) 2005-11 by Philip Monsen.
 
    This module is free software; you can redistribute it and/or modify
    it under the same terms as Perl itself, either Perl version 5.8.3 or,

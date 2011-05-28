@@ -13,6 +13,6 @@ t/01-use-module.t
 t/02-code-snippet.t
 t/03-extract.t
 t/04-write-syms.t
-t/05-pod.t
-t/06-pod-coverage.t
-t/07-kwalitee.t
+xt/author/01-pod.t
+xt/author/02-pod-coverage.t
+xt/author/03-kwalitee.t

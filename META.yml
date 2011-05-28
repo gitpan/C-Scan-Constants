@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               C-Scan-Constants
-version:            1.019
+version:            1.020
 abstract:           Slurp constants from specified C header files
 author:
     - Philip Monsen <philip.monsen@gmail.com>

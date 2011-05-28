@@ -27,7 +27,7 @@ our @EXPORT      = qw( extract_constants_from
 our %EXPORT_TAGS = ( 'all' => [ @EXPORT ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = "1.019";
+our $VERSION = "1.020";
 $VERSION = eval $VERSION;
 
 # This module was originally written to support a custom pure-Perl
@@ -586,7 +586,7 @@ C::Scan::Constants - Slurp constants from specified C header (.h) files
 
 =head1 VERSION
 
-This documentation refers to C::Scan::Constants version 1.018.
+This documentation refers to C::Scan::Constants version 1.020.
 
 =head1 SYNOPSIS
 
@@ -725,8 +725,8 @@ Scalar::Util, List::MoreUtils, Cwd
 
 =head1 COMPATIBILITY NOTES
 
-This version of C::Scan::Constants is known to work with version
-of ExtUtil::Constants versions 0.14 - 0.16.  It may not work
+This version of C::Scan::Constants is known to work with
+ExtUtil::Constants versions 0.14 - 0.16.  It may not work
 properly with earlier or later versions.  I welcome your comments
 and patches to assure continued compatibility going forward.
 
@@ -791,7 +791,7 @@ permissions and limitations under the License.
 
 I<All else>
 
-Copyright (C) 2005-10 by Philip Monsen.
+Copyright (C) 2005-11 by Philip Monsen.
 
 This module is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.3 or,

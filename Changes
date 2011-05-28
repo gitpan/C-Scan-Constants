@@ -1,5 +1,9 @@
 Revision history for Perl extension C::Scan::Constants.
 
+1.020
+    - Moved author-only tests to conventional xt/author dir, with renames
+    - Changed kwalitee test slightly to force a plan always
+
 1.019
     - Fixed Win32 test bug related to lack of cppstdin (use $Config{cc} -E)
     - Made tests cross-platform
